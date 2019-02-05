@@ -61,6 +61,8 @@ int WebSocketClient::begin(const char* aPath)
         }
     }
 
+    awaitingPong = false;
+
     iRxSize = 0;
 
     // status code of 101 means success
@@ -257,6 +259,7 @@ int WebSocketClient::parseMessage()
     }
     else if (TYPE_PONG == messageType())
     {
+        awaitingPong = false;
         flushRx();
         iRxSize = 0;
     }
@@ -302,9 +305,16 @@ int WebSocketClient::ping()
         pingData[i] = random(0xff);
     }
 
+    awaitingPong = true;
+
     beginMessage(TYPE_PING);
     write(pingData, sizeof(pingData));
     return endMessage();
+}
+
+bool WebSocketClient::isAwaitingPong()
+{
+    return awaitingPong;
 }
 
 int WebSocketClient::available()

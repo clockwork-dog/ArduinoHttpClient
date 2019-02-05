@@ -68,6 +68,11 @@ public:
     */
     int ping();
 
+    /** Check if a pong has not yet been seen since last ping
+     @return true if awaiting a pong, otherwise false
+    */
+    bool isAwaitingPong();
+
     // Inherited from Print
     virtual size_t write(uint8_t aByte);
     virtual size_t write(const uint8_t *aBuffer, size_t aSize);
@@ -94,6 +99,8 @@ private:
     bool iRxMasked;
     int iRxMaskIndex;
     uint8_t iRxMaskKey[4];
+
+    bool awaitingPong;
 };
 
 #endif
