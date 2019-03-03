@@ -5,6 +5,13 @@
 
 #include "WebSocketClient.h"
 
+WebSocketClient::WebSocketClient(Client &aClient)
+    : HttpClient(aClient),
+      iTxStarted(false),
+      iRxSize(0)
+{
+}
+
 WebSocketClient::WebSocketClient(Client& aClient, const char* aServerName, uint16_t aServerPort)
  : HttpClient(aClient, aServerName, aServerPort),
    iTxStarted(false),

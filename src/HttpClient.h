@@ -48,9 +48,17 @@ public:
 // FIXME Write longer API request, using port and user-agent, example
 // FIXME Update tempToPachube example to calculate Content-Length correctly
 
+    HttpClient(Client& aClient);
     HttpClient(Client& aClient, const char* aServerName, uint16_t aServerPort = kHttpPort);
     HttpClient(Client& aClient, const String& aServerName, uint16_t aServerPort = kHttpPort);
     HttpClient(Client& aClient, const IPAddress& aServerAddress, uint16_t aServerPort = kHttpPort);
+
+    /**
+      Setters to allow server address/name and port to be set after instantiation
+    */
+    void setServerName(const char* aServerName);
+    void setServerAddress(const IPAddress& aServerAddress);
+    void setServerPort(uint16_t aServerPort);
 
     /** Start a more complex request.
         Use this when you need to send additional headers in the request,

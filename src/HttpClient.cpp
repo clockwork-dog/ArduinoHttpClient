@@ -10,6 +10,13 @@ const char* HttpClient::kUserAgent = "Arduino/2.2.0";
 const char* HttpClient::kContentLengthPrefix = HTTP_HEADER_CONTENT_LENGTH ": ";
 const char* HttpClient::kTransferEncodingChunked = HTTP_HEADER_TRANSFER_ENCODING ": " HTTP_HEADER_VALUE_CHUNKED;
 
+HttpClient::HttpClient(Client& aClient)
+ : iClient(&aClient), iServerName(), iServerAddress(), iServerPort(),
+   iConnectionClose(true), iSendDefaultRequestHeaders(true)
+{
+  resetState();
+}
+
 HttpClient::HttpClient(Client& aClient, const char* aServerName, uint16_t aServerPort)
  : iClient(&aClient), iServerName(aServerName), iServerAddress(), iServerPort(aServerPort),
    iConnectionClose(true), iSendDefaultRequestHeaders(true)
@@ -27,6 +34,19 @@ HttpClient::HttpClient(Client& aClient, const IPAddress& aServerAddress, uint16_
    iConnectionClose(true), iSendDefaultRequestHeaders(true)
 {
   resetState();
+}
+
+void HttpClient::setServerName(const char* aServerName)
+{
+    iServerName = aServerName;
+}
+void HttpClient::setServerAddress(const IPAddress& aServerAddress)
+{
+    iServerAddress = aServerAddress;
+}
+void HttpClient::setServerPort(uint16_t aServerPort)
+{
+    iServerPort = aServerPort;
 }
 
 void HttpClient::resetState()

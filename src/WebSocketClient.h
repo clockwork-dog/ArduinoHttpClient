@@ -18,6 +18,7 @@ static const int TYPE_PONG             = 0xa;
 class WebSocketClient : public HttpClient
 {
 public:
+    WebSocketClient(Client& aClient);
     WebSocketClient(Client& aClient, const char* aServerName, uint16_t aServerPort = HttpClient::kHttpPort);
     WebSocketClient(Client& aClient, const String& aServerName, uint16_t aServerPort = HttpClient::kHttpPort);
     WebSocketClient(Client& aClient, const IPAddress& aServerAddress, uint16_t aServerPort = HttpClient::kHttpPort);
