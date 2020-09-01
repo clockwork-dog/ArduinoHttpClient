@@ -9,55 +9,59 @@
 #include <IPAddress.h>
 #include "Client.h"
 
-static const int HTTP_SUCCESS =0;
+static const int HTTP_SUCCESS = 0;
 // The end of the headers has been reached.  This consumes the '\n'
 // Could not connect to the server
-static const int HTTP_ERROR_CONNECTION_FAILED =-1;
+static const int HTTP_ERROR_CONNECTION_FAILED = -1;
 // This call was made when the HttpClient class wasn't expecting it
 // to be called.  Usually indicates your code is using the class
 // incorrectly
-static const int HTTP_ERROR_API =-2;
+static const int HTTP_ERROR_API = -2;
 // Spent too long waiting for a reply
-static const int HTTP_ERROR_TIMED_OUT =-3;
+static const int HTTP_ERROR_TIMED_OUT = -3;
 // The response from the server is invalid, is it definitely an HTTP
 // server?
-static const int HTTP_ERROR_INVALID_RESPONSE =-4;
+static const int HTTP_ERROR_INVALID_RESPONSE = -4;
 
 // Define some of the common methods and headers here
 // That lets other code reuse them without having to declare another copy
 // of them, so saves code space and RAM
-#define HTTP_METHOD_GET    "GET"
-#define HTTP_METHOD_POST   "POST"
-#define HTTP_METHOD_PUT    "PUT"
-#define HTTP_METHOD_PATCH  "PATCH"
+#define HTTP_METHOD_GET "GET"
+#define HTTP_METHOD_POST "POST"
+#define HTTP_METHOD_PUT "PUT"
+#define HTTP_METHOD_PATCH "PATCH"
 #define HTTP_METHOD_DELETE "DELETE"
 #define HTTP_HEADER_CONTENT_LENGTH "Content-Length"
-#define HTTP_HEADER_CONTENT_TYPE   "Content-Type"
-#define HTTP_HEADER_CONNECTION     "Connection"
+#define HTTP_HEADER_CONTENT_TYPE "Content-Type"
+#define HTTP_HEADER_CONNECTION "Connection"
 #define HTTP_HEADER_TRANSFER_ENCODING "Transfer-Encoding"
-#define HTTP_HEADER_USER_AGENT     "User-Agent"
-#define HTTP_HEADER_VALUE_CHUNKED  "chunked"
+#define HTTP_HEADER_USER_AGENT "User-Agent"
+#define HTTP_HEADER_VALUE_CHUNKED "chunked"
 
 class HttpClient : public Client
 {
 public:
-    static const int kNoContentLengthHeader =-1;
-    static const int kHttpPort =80;
-    static const char* kUserAgent;
+    static const int kNoContentLengthHeader = -1;
+    static const int kHttpPort = 80;
+    static const char *kUserAgent;
 
-// FIXME Write longer API request, using port and user-agent, example
-// FIXME Update tempToPachube example to calculate Content-Length correctly
+    // FIXME Write longer API request, using port and user-agent, example
+    // FIXME Update tempToPachube example to calculate Content-Length correctly
 
-    HttpClient(Client& aClient);
-    HttpClient(Client& aClient, const char* aServerName, uint16_t aServerPort = kHttpPort);
-    HttpClient(Client& aClient, const String& aServerName, uint16_t aServerPort = kHttpPort);
-    HttpClient(Client& aClient, const IPAddress& aServerAddress, uint16_t aServerPort = kHttpPort);
+    HttpClient(Client &aClient);
+#ifndef REMOVE_DNS_SUPPORT
+    HttpClient(Client &aClient, const char *aServerName, uint16_t aServerPort = kHttpPort);
+    HttpClient(Client &aClient, const String &aServerName, uint16_t aServerPort = kHttpPort);
+#endif
+    HttpClient(Client &aClient, const IPAddress &aServerAddress, uint16_t aServerPort = kHttpPort);
 
     /**
       Setters to allow server address/name and port to be set after instantiation
     */
-    void setServerName(const char* aServerName);
-    void setServerAddress(const IPAddress& aServerAddress);
+#ifndef REMOVE_DNS_SUPPORT
+    void setServerName(const char *aServerName);
+#endif
+    void setServerAddress(const IPAddress &aServerAddress);
     void setServerPort(uint16_t aServerPort);
 
     /** Start a more complex request.
@@ -83,15 +87,15 @@ public:
       @param aURLPath     Url to request
       @return 0 if successful, else error
     */
-    int get(const char* aURLPath);
-    int get(const String& aURLPath);
+    int get(const char *aURLPath);
+    int get(const String &aURLPath);
 
     /** Connect to the server and start to send a POST request.
       @param aURLPath     Url to request
       @return 0 if successful, else error
     */
-    int post(const char* aURLPath);
-    int post(const String& aURLPath);
+    int post(const char *aURLPath);
+    int post(const String &aURLPath);
 
     /** Connect to the server and send a POST request
         with body and content type
@@ -100,16 +104,16 @@ public:
       @param aBody        Body of the request
       @return 0 if successful, else error
     */
-    int post(const char* aURLPath, const char* aContentType, const char* aBody);
-    int post(const String& aURLPath, const String& aContentType, const String& aBody);
-    int post(const char* aURLPath, const char* aContentType, int aContentLength, const byte aBody[]);
+    int post(const char *aURLPath, const char *aContentType, const char *aBody);
+    int post(const String &aURLPath, const String &aContentType, const String &aBody);
+    int post(const char *aURLPath, const char *aContentType, int aContentLength, const byte aBody[]);
 
     /** Connect to the server and start to send a PUT request.
       @param aURLPath     Url to request
       @return 0 if successful, else error
     */
-    int put(const char* aURLPath);
-    int put(const String& aURLPath);
+    int put(const char *aURLPath);
+    int put(const String &aURLPath);
 
     /** Connect to the server and send a PUT request
         with body and content type
@@ -118,16 +122,16 @@ public:
       @param aBody        Body of the request
       @return 0 if successful, else error
     */
-    int put(const char* aURLPath, const char* aContentType, const char* aBody);
-    int put(const String& aURLPath, const String& aContentType, const String& aBody);
-    int put(const char* aURLPath, const char* aContentType, int aContentLength, const byte aBody[]);
+    int put(const char *aURLPath, const char *aContentType, const char *aBody);
+    int put(const String &aURLPath, const String &aContentType, const String &aBody);
+    int put(const char *aURLPath, const char *aContentType, int aContentLength, const byte aBody[]);
 
     /** Connect to the server and start to send a PATCH request.
       @param aURLPath     Url to request
       @return 0 if successful, else error
     */
-    int patch(const char* aURLPath);
-    int patch(const String& aURLPath);
+    int patch(const char *aURLPath);
+    int patch(const String &aURLPath);
 
     /** Connect to the server and send a PATCH request
         with body and content type
@@ -136,16 +140,16 @@ public:
       @param aBody        Body of the request
       @return 0 if successful, else error
     */
-    int patch(const char* aURLPath, const char* aContentType, const char* aBody);
-    int patch(const String& aURLPath, const String& aContentType, const String& aBody);
-    int patch(const char* aURLPath, const char* aContentType, int aContentLength, const byte aBody[]);
+    int patch(const char *aURLPath, const char *aContentType, const char *aBody);
+    int patch(const String &aURLPath, const String &aContentType, const String &aBody);
+    int patch(const char *aURLPath, const char *aContentType, int aContentLength, const byte aBody[]);
 
     /** Connect to the server and start to send a DELETE request.
       @param aURLPath     Url to request
       @return 0 if successful, else error
     */
-    int del(const char* aURLPath);
-    int del(const String& aURLPath);
+    int del(const char *aURLPath);
+    int del(const String &aURLPath);
 
     /** Connect to the server and send a DELETE request
         with body and content type
@@ -154,9 +158,9 @@ public:
       @param aBody        Body of the request
       @return 0 if successful, else error
     */
-    int del(const char* aURLPath, const char* aContentType, const char* aBody);
-    int del(const String& aURLPath, const String& aContentType, const String& aBody);
-    int del(const char* aURLPath, const char* aContentType, int aContentLength, const byte aBody[]);
+    int del(const char *aURLPath, const char *aContentType, const char *aBody);
+    int del(const String &aURLPath, const String &aContentType, const String &aBody);
+    int del(const char *aURLPath, const char *aContentType, int aContentLength, const byte aBody[]);
 
     /** Connect to the server and start to send the request.
         If a body is provided, the entire request (including headers and body) will be sent
@@ -167,9 +171,9 @@ public:
       @param aBody           Body of request (optional)
       @return 0 if successful, else error
     */
-    int startRequest(const char* aURLPath,
-                     const char* aHttpMethod,
-                     const char* aContentType = NULL,
+    int startRequest(const char *aURLPath,
+                     const char *aHttpMethod,
+                     const char *aContentType = NULL,
                      int aContentLength = -1,
                      const byte aBody[] = NULL);
 
@@ -178,10 +182,12 @@ public:
       @param aHeader Header line to send, in its entirety (but without the
                      trailing CRLF.  E.g. "Authorization: Basic YQDDCAIGES"
     */
-    void sendHeader(const char* aHeader);
+    void sendHeader(const char *aHeader);
 
-    void sendHeader(const String& aHeader)
-      { sendHeader(aHeader.c_str()); }
+    void sendHeader(const String &aHeader)
+    {
+        sendHeader(aHeader.c_str());
+    }
 
     /** Send an additional header line.  This is an alternate form of
       sendHeader() which takes the header name and content as separate strings.
@@ -190,10 +196,12 @@ public:
       @param aHeaderName Type of header being sent
       @param aHeaderValue Value for that header
     */
-    void sendHeader(const char* aHeaderName, const char* aHeaderValue);
+    void sendHeader(const char *aHeaderName, const char *aHeaderValue);
 
-    void sendHeader(const String& aHeaderName, const String& aHeaderValue)
-      { sendHeader(aHeaderName.c_str(), aHeaderValue.c_str()); }
+    void sendHeader(const String &aHeaderName, const String &aHeaderValue)
+    {
+        sendHeader(aHeaderName.c_str(), aHeaderValue.c_str());
+    }
 
     /** Send an additional header line.  This is an alternate form of
       sendHeader() which takes the header name and content separately but where
@@ -203,10 +211,12 @@ public:
       @param aHeaderName Type of header being sent
       @param aHeaderValue Value for that header
     */
-    void sendHeader(const char* aHeaderName, const int aHeaderValue);
+    void sendHeader(const char *aHeaderName, const int aHeaderValue);
 
-    void sendHeader(const String& aHeaderName, const int aHeaderValue)
-      { sendHeader(aHeaderName.c_str(), aHeaderValue); }
+    void sendHeader(const String &aHeaderName, const int aHeaderValue)
+    {
+        sendHeader(aHeaderName.c_str(), aHeaderValue);
+    }
 
     /** Send a basic authentication header.  This will encode the given username
       and password, and send them in suitable header line for doing Basic
@@ -214,10 +224,12 @@ public:
       @param aUser Username for the authorization
       @param aPassword Password for the user aUser
     */
-    void sendBasicAuth(const char* aUser, const char* aPassword);
+    void sendBasicAuth(const char *aUser, const char *aPassword);
 
-    void sendBasicAuth(const String& aUser, const String& aPassword)
-      { sendBasicAuth(aUser.c_str(), aPassword.c_str()); }
+    void sendBasicAuth(const String &aUser, const String &aPassword)
+    {
+        sendBasicAuth(aUser.c_str(), aPassword.c_str());
+    }
 
     /** Get the HTTP status code contained in the response.
       For example, 200 for successful request, 404 for file not found, etc.
@@ -305,8 +317,22 @@ public:
     // Inherited from Print
     // Note: 1st call to these indicates the user is sending the body, so if need
     // Note: be we should finish the header first
-    virtual size_t write(uint8_t aByte) { if (iState < eRequestSent) { finishHeaders(); }; return iClient-> write(aByte); };
-    virtual size_t write(const uint8_t *aBuffer, size_t aSize) { if (iState < eRequestSent) { finishHeaders(); }; return iClient->write(aBuffer, aSize); };
+    virtual size_t write(uint8_t aByte)
+    {
+        if (iState < eRequestSent)
+        {
+            finishHeaders();
+        };
+        return iClient->write(aByte);
+    };
+    virtual size_t write(const uint8_t *aBuffer, size_t aSize)
+    {
+        if (iState < eRequestSent)
+        {
+            finishHeaders();
+        };
+        return iClient->write(aBuffer, aSize);
+    };
     // Inherited from Stream
     virtual int available();
     /** Read the next byte from the server.
@@ -325,6 +351,7 @@ public:
     virtual operator bool() { return bool(iClient); };
     virtual uint32_t httpResponseTimeout() { return iHttpResponseTimeout; };
     virtual void setHttpResponseTimeout(uint32_t timeout) { iHttpResponseTimeout = timeout; };
+
 protected:
     /** Reset internal state data back to the "just initialised" state
     */
@@ -335,8 +362,8 @@ protected:
       @param aHttpMethod  Type of HTTP request to make, e.g. "GET", "POST", etc.
       @return 0 if successful, else error
     */
-    int sendInitialHeaders(const char* aURLPath,
-                     const char* aHttpMethod);
+    int sendInitialHeaders(const char *aURLPath,
+                           const char *aHttpMethod);
 
     /* Let the server know that we've reached the end of the headers
     */
@@ -352,10 +379,11 @@ protected:
     // Number of milliseconds that we'll wait in total without receiveing any
     // data before returning HTTP_ERROR_TIMED_OUT (during status code and header
     // processing)
-    static const int kHttpResponseTimeout = 30*1000;
-    static const char* kContentLengthPrefix;
-    static const char* kTransferEncodingChunked;
-    typedef enum {
+    static const int kHttpResponseTimeout = 30 * 1000;
+    static const char *kContentLengthPrefix;
+    static const char *kTransferEncodingChunked;
+    typedef enum
+    {
         eIdle,
         eRequestStarted,
         eRequestSent,
@@ -369,9 +397,11 @@ protected:
         eReadingBodyChunk
     } tHttpState;
     // Client we're using
-    Client* iClient;
+    Client *iClient;
+#ifndef REMOVE_DNS_SUPPORT
     // Server we are connecting to
-    const char* iServerName;
+    const char *iServerName;
+#endif
     IPAddress iServerAddress;
     // Port of server we are connecting to
     uint16_t iServerPort;
@@ -384,9 +414,9 @@ protected:
     // How many bytes of the response body have been read by the user
     int iBodyLengthConsumed;
     // How far through a Content-Length header prefix we are
-    const char* iContentLengthPtr;
+    const char *iContentLengthPtr;
     // How far through a Transfer-Encoding chunked header we are
-    const char* iTransferEncodingChunkedPtr;
+    const char *iTransferEncodingChunkedPtr;
     // Stores if the response body is chunked
     bool iIsChunked;
     // Stores the value of the current chunk length, if present
