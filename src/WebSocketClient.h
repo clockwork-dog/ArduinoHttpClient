@@ -8,26 +8,27 @@
 
 #include "HttpClient.h"
 
-static const int TYPE_CONTINUATION = 0x0;
-static const int TYPE_TEXT = 0x1;
-static const int TYPE_BINARY = 0x2;
+static const int TYPE_CONTINUATION     = 0x0;
+static const int TYPE_TEXT             = 0x1;
+static const int TYPE_BINARY           = 0x2;
 static const int TYPE_CONNECTION_CLOSE = 0x8;
-static const int TYPE_PING = 0x9;
-static const int TYPE_PONG = 0xa;
+static const int TYPE_PING             = 0x9;
+static const int TYPE_PONG             = 0xa;
 
 class WebSocketClient : public HttpClient
 {
 public:
-    WebSocketClient(Client &aClient);
-
-    WebSocketClient(Client &aClient, const IPAddress &aServerAddress, uint16_t aServerPort = HttpClient::kHttpPort);
+    WebSocketClient(Client& aClient);
+    WebSocketClient(Client& aClient, const char* aServerName, uint16_t aServerPort = HttpClient::kHttpPort);
+    WebSocketClient(Client& aClient, const String& aServerName, uint16_t aServerPort = HttpClient::kHttpPort);
+    WebSocketClient(Client& aClient, const IPAddress& aServerAddress, uint16_t aServerPort = HttpClient::kHttpPort);
 
     /** Start the Web Socket connection to the specified path
       @param aURLPath     Path to use in request (optional, "/" is used by default)
       @return 0 if successful, else error
      */
-    int begin(const char *aPath = "/");
-    int begin(const String &aPath);
+    int begin(const char* aPath = "/");
+    int begin(const String& aPath);
 
     /** Begin to send a message of type (TYPE_TEXT or TYPE_BINARY)
         Use the write or Stream API's to set message content, followed by endMessage
