@@ -90,7 +90,6 @@ public:
     virtual int read(uint8_t *buf, size_t size);
     virtual int peek();
 
-private:
     void flushRx();
 
 private:
