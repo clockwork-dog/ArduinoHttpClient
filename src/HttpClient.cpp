@@ -121,7 +121,7 @@ int HttpClient::startRequest(const char *aURLPath, const char *aHttpMethod,
       if (!iClient->connect(iServerName, iServerPort) > 0)
       {
 #ifdef LOGGING
-        Serial3.println("Connection failed");
+        SERIAL_PORT.println("Connection failed");
 #endif
         return HTTP_ERROR_CONNECTION_FAILED;
       }
@@ -132,7 +132,7 @@ int HttpClient::startRequest(const char *aURLPath, const char *aHttpMethod,
       if (!iClient->connect(iServerAddress, iServerPort) > 0)
       {
 #ifdef LOGGING
-        Serial3.println("Connection failed");
+        SERIAL_PORT.println("Connection failed");
 #endif
         return HTTP_ERROR_CONNECTION_FAILED;
       }
@@ -143,7 +143,7 @@ int HttpClient::startRequest(const char *aURLPath, const char *aHttpMethod,
   else
   {
 #ifdef LOGGING
-    Serial3.println("Connection already open");
+    SERIAL_PORT.println("Connection already open");
 #endif
   }
 
@@ -183,7 +183,7 @@ int HttpClient::startRequest(const char *aURLPath, const char *aHttpMethod,
 int HttpClient::sendInitialHeaders(const char *aURLPath, const char *aHttpMethod)
 {
 #ifdef LOGGING
-  Serial3.println("Connected");
+  SERIAL_PORT.println("Connected");
 #endif
   // Send the HTTP command, i.e. "GET /somepath/ HTTP/1.0"
   iClient->print(aHttpMethod);
