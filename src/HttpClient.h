@@ -10,7 +10,7 @@
 #include "Client.h"
 
 #ifndef SERIAL_PORT
-#define SERIAL_PORT Serial3
+#define SERIAL_PORT Serial
 #endif
 
 static const int HTTP_SUCCESS = 0;
