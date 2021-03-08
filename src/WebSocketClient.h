@@ -18,93 +18,93 @@ static const int TYPE_PONG = 0xa;
 class WebSocketClient : public HttpClient
 {
 public:
-    WebSocketClient(Client &aClient);
+  WebSocketClient(Client &aClient);
 
 #ifndef REMOVE_DNS_SUPPORT
-    WebSocketClient(Client &aClient, const char *aServerName, uint16_t aServerPort = HttpClient::kHttpPort);
-    WebSocketClient(Client &aClient, const String &aServerName, uint16_t aServerPort = HttpClient::kHttpPort);
+  WebSocketClient(Client &aClient, const char *aServerName, uint16_t aServerPort = HttpClient::kHttpPort);
+  WebSocketClient(Client &aClient, const String &aServerName, uint16_t aServerPort = HttpClient::kHttpPort);
 #endif
 
-    WebSocketClient(Client &aClient, const IPAddress &aServerAddress, uint16_t aServerPort = HttpClient::kHttpPort);
+  WebSocketClient(Client &aClient, const IPAddress &aServerAddress, uint16_t aServerPort = HttpClient::kHttpPort);
 
-    /** Start the Web Socket connection to the specified path
+  /** Start the Web Socket connection to the specified path
       @param aURLPath     Path to use in request (optional, "/" is used by default)
       @return 0 if successful, else error
      */
-    int begin(const char *aPath = "/");
-    int begin(const String &aPath);
+  int begin(const char *aPath = "/");
+  int begin(const String &aPath);
 
-    /** Begin to send a message of type (TYPE_TEXT or TYPE_BINARY)
+  /** Begin to send a message of type (TYPE_TEXT or TYPE_BINARY)
         Use the write or Stream API's to set message content, followed by endMessage
         to complete the message.
       @param aURLPath     Path to use in request
       @return 0 if successful, else error
     */
-    int beginMessage(int aType);
+  int beginMessage(int aType);
 
-    /** Completes sending of a message started by beginMessage
+  /** Completes sending of a message started by beginMessage
       @return 0 if successful, else error
     */
-    int endMessage();
+  int endMessage();
 
-    /** Try to parse an incoming messages
+  /** Try to parse an incoming messages
       @return 0 if no message available, else size of parsed message
     */
-    int parseMessage();
+  int parseMessage();
 
-    /** Returns type of current parsed message
+  /** Returns type of current parsed message
       @return type of current parsedMessage (TYPE_TEXT or TYPE_BINARY)
     */
-    int messageType();
+  int messageType();
 
-    /** Returns if the current message is the final chunk of a split
+  /** Returns if the current message is the final chunk of a split
         message
       @return true for final message, false otherwise
     */
-    bool isFinal();
+  bool isFinal();
 
-    /** Read the current messages as a string
+  /** Read the current messages as a string
       @return current message as a string
     */
-    String readString();
+  String readString();
 
-    /** Send a ping
+  /** Send a ping
       @return 0 if successful, else error
     */
-    int ping();
+  int ping();
 
-    /** Check if a pong has not yet been seen since last ping
+  /** Check if a pong has not yet been seen since last ping
      @return true if awaiting a pong, otherwise false
     */
-    bool isAwaitingPong();
+  bool isAwaitingPong();
 
-    // Inherited from Print
-    virtual size_t write(uint8_t aByte);
-    virtual size_t write(const uint8_t *aBuffer, size_t aSize);
-    // Inherited from Stream
-    virtual int available();
-    /** Read the next byte from the server.
+  // Inherited from Print
+  virtual size_t write(uint8_t aByte);
+  virtual size_t write(const uint8_t *aBuffer, size_t aSize);
+  // Inherited from Stream
+  virtual int available();
+  /** Read the next byte from the server.
       @return Byte read or -1 if there are no bytes available.
     */
-    virtual int read();
-    virtual int read(uint8_t *buf, size_t size);
-    virtual int peek();
+  virtual int read();
+  virtual int read(uint8_t *buf, size_t size);
+  virtual int peek();
 
-    void flushRx();
+  void flushRx();
 
 private:
-    bool iTxStarted;
-    uint8_t iTxMessageType;
-    uint8_t iTxBuffer[128];
-    uint64_t iTxSize;
+  bool iTxStarted;
+  uint8_t iTxMessageType;
+  uint8_t iTxBuffer[1024];
+  uint64_t iTxSize;
 
-    uint8_t iRxOpCode;
-    uint64_t iRxSize;
-    bool iRxMasked;
-    int iRxMaskIndex;
-    uint8_t iRxMaskKey[4];
+  uint8_t iRxOpCode;
+  uint64_t iRxSize;
+  bool iRxMasked;
+  int iRxMaskIndex;
+  uint8_t iRxMaskKey[4];
 
-    bool awaitingPong;
+  bool awaitingPong;
 };
 
 #endif
