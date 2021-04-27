@@ -8,6 +8,10 @@
 
 #include "HttpClient.h"
 
+#ifndef MAXIMUM_WEBSOCKET_TRANSMIT_BUFFER_SIZE
+#define MAXIMUM_WEBSOCKET_TRANSMIT_BUFFER_SIZE 1024
+#endif
+
 static const int TYPE_CONTINUATION = 0x0;
 static const int TYPE_TEXT = 0x1;
 static const int TYPE_BINARY = 0x2;
@@ -95,7 +99,7 @@ public:
 private:
   bool iTxStarted;
   uint8_t iTxMessageType;
-  uint8_t iTxBuffer[1024];
+  uint8_t iTxBuffer[MAXIMUM_WEBSOCKET_TRANSMIT_BUFFER_SIZE];
   uint64_t iTxSize;
 
   uint8_t iRxOpCode;
